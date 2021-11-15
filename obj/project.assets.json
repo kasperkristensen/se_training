@@ -8,19 +8,19 @@
     "net5.0": []
   },
   "packageFolders": {
-    "/Users/kasperf.kristensen/.nuget/packages/": {}
+    "C:\\Users\\oscar\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/kasperf.kristensen/school_work/BDSA/se_training/se_training.csproj",
+      "projectUniqueName": "c:\\Users\\oscar\\Desktop\\se_training\\se_training.csproj",
       "projectName": "se_training",
-      "projectPath": "/Users/kasperf.kristensen/school_work/BDSA/se_training/se_training.csproj",
-      "packagesPath": "/Users/kasperf.kristensen/.nuget/packages/",
-      "outputPath": "/Users/kasperf.kristensen/school_work/BDSA/se_training/obj/",
+      "projectPath": "c:\\Users\\oscar\\Desktop\\se_training\\se_training.csproj",
+      "packagesPath": "C:\\Users\\oscar\\.nuget\\packages\\",
+      "outputPath": "c:\\Users\\oscar\\Desktop\\se_training\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "/Users/kasperf.kristensen/.nuget/NuGet/NuGet.Config"
+        "C:\\Users\\oscar\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net5.0"
@@ -61,7 +61,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/5.0.400/RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.400\\RuntimeIdentifierGraph.json"
       }
     }
   }
