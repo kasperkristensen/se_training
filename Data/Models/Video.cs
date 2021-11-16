@@ -5,7 +5,7 @@ namespace se_training.Data{
 
         [StringLength(50)]
         [Url]
-        public string VideoUrl {get; set;}
+        public string VideoUrl { get; set; }
 
     }
 }

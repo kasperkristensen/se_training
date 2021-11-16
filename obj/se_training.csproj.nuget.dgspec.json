@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "c:\\Users\\oscar\\Desktop\\se_training\\se_training.csproj": {}
+    "/Users/kasperf.kristensen/school_work/BDSA/se_training/se_training.csproj": {}
   },
   "projects": {
-    "c:\\Users\\oscar\\Desktop\\se_training\\se_training.csproj": {
+    "/Users/kasperf.kristensen/school_work/BDSA/se_training/se_training.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "c:\\Users\\oscar\\Desktop\\se_training\\se_training.csproj",
+        "projectUniqueName": "/Users/kasperf.kristensen/school_work/BDSA/se_training/se_training.csproj",
         "projectName": "se_training",
-        "projectPath": "c:\\Users\\oscar\\Desktop\\se_training\\se_training.csproj",
-        "packagesPath": "C:\\Users\\oscar\\.nuget\\packages\\",
-        "outputPath": "c:\\Users\\oscar\\Desktop\\se_training\\obj\\",
+        "projectPath": "/Users/kasperf.kristensen/school_work/BDSA/se_training/se_training.csproj",
+        "packagesPath": "/Users/kasperf.kristensen/.nuget/packages/",
+        "outputPath": "/Users/kasperf.kristensen/school_work/BDSA/se_training/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\oscar\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "/Users/kasperf.kristensen/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net5.0"
@@ -37,6 +37,26 @@
       "frameworks": {
         "net5.0": {
           "targetAlias": "net5.0",
+          "dependencies": {
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[5.0.10, )"
+            },
+            "Microsoft.EntityFrameworkCore.Design": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[5.0.10, )"
+            },
+            "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[5.0.10, )"
+            },
+            "System.Data.SqlClient": {
+              "target": "Package",
+              "version": "[4.8.3, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",
@@ -55,7 +75,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.400\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/5.0.400/RuntimeIdentifierGraph.json"
         }
       }
     }

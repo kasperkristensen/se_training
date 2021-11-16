@@ -1,8 +1,9 @@
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace se_training.Data
 {
-    public class Like
+    public class Like : IBaseModel
     {
         public int Id {get; set;}
 
@@ -10,5 +11,7 @@ namespace se_training.Data
         public string UserId {get; set;}
 
         public Material Material {get; set;}
+        public DateTime CreatedAt { get; set; }
+        public DateTime UpdatedAt { get; set; }
     }
 }
