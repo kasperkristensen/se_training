@@ -11,6 +11,9 @@ namespace se_training.Data{
 
         public string Title { get; set; }
 
+        [StringLength(50)]
+        public string AuthorName { get; set; }
+
         public ICollection<Comment> Comments { get; set; } = null;
         
         public ICollection<Like> Likes { get; set; } = null;
