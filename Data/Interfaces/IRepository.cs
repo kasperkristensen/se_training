@@ -2,11 +2,11 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace se_training.Data {
-    public interface IRepository<T> where T : class {
-        Task<T> GetById(int id);
-        Task<T> Create(T entity);
-        Task<T> Update(T entity);
-        Task Delete(T entity);
-        Task Delete(int id);
+    public interface IRepository {
+        Task GetById(int id);
+        Task<Response> Create(T entity);
+        Task<Response> Update(T entity);
+        Task<Response> Delete(T entity);
+        Task<Response> Delete(int id);
     }
 }

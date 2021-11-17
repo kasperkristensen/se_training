@@ -23,9 +23,6 @@ namespace se_training.Data
             modelBuilder.Entity<Material>().HasMany(m => m.Comments).WithOne(c => c.Material);
             modelBuilder.Entity<Material>().HasMany(m => m.Likes).WithOne(l => l.Material);
             modelBuilder.Entity<Material>().HasMany(m => m.Tags).WithMany(t => t.Materials);
-
-            modelBuilder.Entity<Material>()
-                .Property<DateTime>("DeletedAt");
         }
 
         public override int SaveChanges(bool acceptAllChangesOnSuccess)
@@ -47,12 +44,18 @@ namespace se_training.Data
                 switch (entry.State)
                 {
                     case EntityState.Added:
-                        entry.CurrentValues["IsDeleted"] = false;
+                        entry.CurrentValues["DeletedAt"] = null;
+                        entry.CurrentValues["CreatedAt"] = DateTime.Now;
+                        entry.CurrentValues["UpdatedAt"] = DateTime.Now;
                         break;
-
+                    case EntityState.Modified:
+                        entry.CurrentValues["UpdatedAt"] = DateTime.Now;
+                        break;
                     case EntityState.Deleted:
                         entry.State = EntityState.Modified;
-                        entry.CurrentValues["IsDeleted"] = true;
+                        entry.CurrentValues["DeletedAt"] = DateTime.Now;
+                        break;
+                    default:
                         break;
                 }
             }

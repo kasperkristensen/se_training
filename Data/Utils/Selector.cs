@@ -4,8 +4,8 @@ namespace se_training.Data
 {
     public record Selector
     {
-        public string[] Relations { get; set; }
-        public string[] Fields { get; set; }
+        public string[]? Relations { get; set; }
+        public string[]? Fields { get; set; }
 
         public static Selector FromString(string selector)
         {

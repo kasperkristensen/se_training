@@ -1,9 +1,10 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace se_training.Data
 {
-    public class TagRepository : IRepository<Tag>
+    public class TagRepository : ITagRepository
     {
         
         private readonly SeContext _context;
@@ -13,23 +14,48 @@ namespace se_training.Data
             _context = context;
         }
 
-        public async Task<Tag> Create(Tag entity)
+        public async Task<Response> Create(TagCreateDTO entity)
         {
-            var tag = _context.Tags.Add(entity);
+            var material = await _context.Materials.FindAsync(entity.MaterialId);
+
+            if (material == null)
+            {
+                return Response.BadRequest;
+            }
+
+            var tag = new Tag
+            {
+                Value = entity.Value,
+                Materials = new List<Material>() { await _context.Materials.FindAsync(entity.MaterialId) }
+            };
+
+            _context.Tags.Add(tag);
             await _context.SaveChangesAsync();
-            return tag.Entity;
+            
+            return Response.Created;
         }
 
-        public async Task Delete(Tag entity)
+        public async Task<Response> Delete(TagUpdateDTO entity)
         {
-            _context.Tags.Remove(entity);
+            var tag = await _context.Tags.FindAsync(entity.Id);
+
+            if (tag == null)
+            {
+                return Response.NotFound;
+            }
+
+            _context.Tags.Remove(tag);
             await _context.SaveChangesAsync();
+
+            return Response.Deleted;
         }
 
-        public async Task Delete(int id)
+        public async Task<Response> Delete(int id)
         {
             var tag = await _context.Tags.FindAsync(id);
-            await Delete(tag);
+            await Delete(new TagUpdateDTO { Id = id });
+
+            return Response.Deleted;
         }
 
         public async Task<Tag> GetById(int id)
@@ -37,9 +63,20 @@ namespace se_training.Data
             return await _context.Tags.FindAsync(id);
         }
 
-        public Task<Tag> Update(Tag entity)
+        public async Task<Response> Update(TagUpdateDTO entity)
         {
-            throw new System.NotImplementedException();
+            var tag = await _context.Tags.FindAsync(entity.Id);
+
+            if (tag == null)
+            {
+                return Response.NotFound;
+            }
+
+            tag.Value = entity.Value;
+            tag.Materials = await entity.MaterialIds.Select(async id => await _context.Materials.FindAsync(id)).ToList();
+            await _context.SaveChangesAsync();
+
+            return Response.Updated;
         }
     }
 }

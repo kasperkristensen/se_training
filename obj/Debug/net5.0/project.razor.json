@@ -111,6 +111,39 @@
         }
       },
       {
+        "HashCode": -2125408465,
+        "Kind": "Components.Component",
+        "Name": "se_training.App",
+        "AssemblyName": "se_training",
+        "CaseSensitive": true,
+        "TagMatchingRules": [
+          {
+            "TagName": "App"
+          }
+        ],
+        "Metadata": {
+          "Runtime.Name": "Components.IComponent",
+          "Common.TypeName": "se_training.App"
+        }
+      },
+      {
+        "HashCode": -881303826,
+        "Kind": "Components.Component",
+        "Name": "se_training.App",
+        "AssemblyName": "se_training",
+        "CaseSensitive": true,
+        "TagMatchingRules": [
+          {
+            "TagName": "se_training.App"
+          }
+        ],
+        "Metadata": {
+          "Runtime.Name": "Components.IComponent",
+          "Common.TypeName": "se_training.App",
+          "Components.NameMatch": "Components.FullyQualifiedNameMatch"
+        }
+      },
+      {
         "HashCode": -848860627,
         "Kind": "Components.Component",
         "Name": "se_training.Shared.MainLayout",
@@ -289,39 +322,6 @@
         "Metadata": {
           "Runtime.Name": "Components.IComponent",
           "Common.TypeName": "se_training.Shared.SurveyPrompt",
-          "Components.NameMatch": "Components.FullyQualifiedNameMatch"
-        }
-      },
-      {
-        "HashCode": -2125408465,
-        "Kind": "Components.Component",
-        "Name": "se_training.App",
-        "AssemblyName": "se_training",
-        "CaseSensitive": true,
-        "TagMatchingRules": [
-          {
-            "TagName": "App"
-          }
-        ],
-        "Metadata": {
-          "Runtime.Name": "Components.IComponent",
-          "Common.TypeName": "se_training.App"
-        }
-      },
-      {
-        "HashCode": -881303826,
-        "Kind": "Components.Component",
-        "Name": "se_training.App",
-        "AssemblyName": "se_training",
-        "CaseSensitive": true,
-        "TagMatchingRules": [
-          {
-            "TagName": "se_training.App"
-          }
-        ],
-        "Metadata": {
-          "Runtime.Name": "Components.IComponent",
-          "Common.TypeName": "se_training.App",
           "Components.NameMatch": "Components.FullyQualifiedNameMatch"
         }
       },

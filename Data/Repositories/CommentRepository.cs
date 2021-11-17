@@ -15,23 +15,26 @@ namespace se_training.Data
             _context = context;
         }
 
-        public async Task<Comment> Create(Comment entity)
+        public async Task<Response> Create(Comment entity)
         {
             var comment = _context.Comments.Add(entity);
             await _context.SaveChangesAsync();
-            return comment.Entity;
+            
+            return Response.Created;
         }
 
-        public async Task Delete(Comment entity)
+        public async Task<Response> Delete(Comment entity)
         {
             _context.Comments.Remove(entity);
             await _context.SaveChangesAsync();
+            return Response.Deleted;
         }
 
-        public async Task Delete(int id)
+        public async Task<Response> Delete(int id)
         {
             var comment = await _context.Comments.FindAsync(id);
             await Delete(comment);
+            return Response.Deleted;
         }
 
         public async Task<Comment> GetById(int id)
@@ -39,9 +42,19 @@ namespace se_training.Data
             return await _context.Comments.FindAsync(id);
         }
 
-        public Task<Comment> Update(Comment entity)
+        public async Task<Response> Update(CommentDTO entity)
         {
-            throw new System.NotImplementedException();
+            var comment = _context.Comments.Find(entity.Id);
+
+            if (comment == null)
+            {
+                return Response.NotFound;
+            }
+
+            comment.Text = entity.Text;
+            await _context.SaveChangesAsync();
+
+            return Response.Updated;
         }
     }
 }

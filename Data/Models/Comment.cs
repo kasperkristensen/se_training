@@ -15,8 +15,12 @@ namespace se_training.Data{
         public Material Material{get; set;}
 
         [StringLength(500)]
-         public string Text{get; set;}
+        public string Text{get; set;}
+
         public DateTime CreatedAt { get; set;}
+
         public DateTime UpdatedAt { get; set;}
+
+        public DateTime? DeletedAt { get; set; }
     }
 }

@@ -18,5 +18,6 @@ namespace se_training.Data{
         public ICollection<Tag> Tags { get; set; } = null;
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
+        public DateTime? DeletedAt { get; set; }
     }
 }
