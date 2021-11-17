@@ -10,6 +10,9 @@ namespace se_training.Data{
         [StringLength(50)]
         public string UserId{get; set;}
 
+        [StringLength(50)]
+        public string UserName {get; set;}
+
         public Comment Parent{get; set;} 
 
         public Material Material{get; set;}
