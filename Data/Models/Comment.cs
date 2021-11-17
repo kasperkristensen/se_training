@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace se_training.Data{
@@ -14,6 +15,8 @@ namespace se_training.Data{
         public string UserName {get; set;}
 
         public Comment Parent{get; init;} 
+
+        public IEnumerable<Comment> Children{get; set;}
 
         public Material Material{get; init;}
 
