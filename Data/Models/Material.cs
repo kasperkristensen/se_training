@@ -4,10 +4,10 @@ using System.ComponentModel.DataAnnotations;
 
 namespace se_training.Data{
     public class Material: IBaseModel {
-        public int Id { get; set; }
+        public int Id { get; init; }
 
         [StringLength(50)]
-        public string Note { get; set; }
+        public string Note { get; init; }
 
         public string Title { get; set; }
 

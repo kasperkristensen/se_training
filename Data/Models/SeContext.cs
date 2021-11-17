@@ -23,6 +23,7 @@ namespace se_training.Data
             modelBuilder.Entity<Material>().HasMany(m => m.Comments).WithOne(c => c.Material);
             modelBuilder.Entity<Material>().HasMany(m => m.Likes).WithOne(l => l.Material);
             modelBuilder.Entity<Material>().HasMany(m => m.Tags).WithMany(t => t.Materials);
+            modelBuilder.Entity<Comment>().HasMany(m => m.Children).WithOne(c => c.Parent);
         }
 
         public override int SaveChanges(bool acceptAllChangesOnSuccess)

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace se_training.Data{
     public class Tag : IBaseModel{
-        public int Id { get; set; }
+        public int Id { get; init; }
 
         public string Value { get; set; } 
 

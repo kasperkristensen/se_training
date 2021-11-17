@@ -5,7 +5,7 @@ namespace se_training.Data
 {
     public class Like : IBaseModel
     {
-        public int Id {get; set;}
+        public int Id {get; init;}
 
         [StringLength(50)]
         public string UserId {get; set;}
