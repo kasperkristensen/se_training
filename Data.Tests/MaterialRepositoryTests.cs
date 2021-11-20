@@ -30,9 +30,92 @@ namespace Data.Tests
         }
 
         [Fact]
-        public void Create_given_Material_returns_Material_with_Id()
+        public async void Create_given_Material_returns_Material_with_Id()
         {
-            
+
+            var dto = new MaterialCreateDTO{
+                Title = "Java for monkeys",
+                Note = "something",
+                UserId = "69"
+            };
+            Material actual =  await _repo.Create(dto);
+            var currentTime = DateTime.UtcNow;
+
+            Assert.Equal(dto.Title, actual.Title);
+            Assert.Equal(dto.Note, actual.Note);
+            Assert.Equal(dto.UserId, actual.UserId);
+            Assert.Equal(currentTime, actual.CreatedAt, precision: TimeSpan.FromSeconds(1));
+            Assert.Equal(currentTime, actual.UpdatedAt, precision: TimeSpan.FromSeconds(1));
         }
+
+        [Fact]
+        public async void GetById_When_Given_Id_Returns_Corresponding_Material()
+        {
+
+            var dto = new MaterialCreateDTO{
+                Title = "Java for monkeys",
+                Note = "something",
+                UserId = "69"
+            };
+            var d2 = new MaterialCreateDTO{
+                Title = "Java for monkeys 2",
+                Note = "something else",
+                UserId = "69"
+            };
+            _repo.Create(dto);
+            await _repo.Create(d2);
+            Material actual =await _repo.GetById(2);
+
+            var currentTime = DateTime.UtcNow;
+
+            Assert.Equal(d2.Title, actual.Title);
+        }
+
+        [Fact]
+        public async void Update_When_Given_proper_UpdateDTO_Returns_Updated()
+        {
+
+            var dto = new MaterialCreateDTO{
+                Title = "Java for monkeys",
+                Note = "something",
+                UserId = "69"
+            };
+            var d2 = new MaterialUpdateDTO{
+                Id = 1,
+                Title = "Java for monkeys 2",
+                Note = "something else",
+                UserId = "69"
+            };
+            _repo.Create(dto);
+            Response actual = await _repo.Update(d2);
+            Material updated = await _repo.GetById(0);
+
+            Assert.Equal(Response.Updated, actual);
+            Assert.Equal(d2.Title, updated.Title);
+        }
+
+        [Fact]
+        public async void Update_When_Given_UpdateDTO_With_Bad_Id_Returns_NotFound()
+        {
+
+            var dto = new MaterialCreateDTO{
+                Title = "Java for monkeys",
+                Note = "something",
+                UserId = "69"
+            };
+            var d2 = new MaterialUpdateDTO{
+                Id = 27,
+                Title = "Java for monkeys 2",
+                Note = "something else",
+                UserId = "69"
+            };
+            _repo.Create(dto);
+            Response actual = await _repo.Update(d2);
+            Material updated = await _repo.GetById(0);
+
+            Assert.Equal(Response.NotFound, actual);
+            Assert.Equal(dto.Title, updated.Title);
+        }
+        
     }
 }

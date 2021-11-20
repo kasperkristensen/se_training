@@ -11,6 +11,8 @@ namespace se_training.Data{
 
         public string Title { get; set; }
 
+        public String UserId {get; set;}
+
         [StringLength(50)]
         public string AuthorName { get; set; }
 

@@ -12,11 +12,16 @@ namespace  se_training.Data
             _context = context;
         }
 
-        public async Task<Material> Create(Material entity)
+        public async Task<Material> Create(MaterialCreateDTO entity)
         {
-            var material = _context.Materials.Add(entity);
+            var Mat = DTO2Material(entity);
+            var material = _context.Materials.Add(Mat);
             await _context.SaveChangesAsync();
             return material.Entity;
+        }
+
+        private Material DTO2Material(MaterialCreateDTO entity){
+            return new Material();
         }
 
         public async Task Delete(Material entity)
@@ -36,7 +41,7 @@ namespace  se_training.Data
             return await _context.Materials.FindAsync(id);
         }
 
-        public Task<Material> Update(Material entity)
+        public Task<Response> Update(MaterialUpdateDTO entity)
         {
             throw new System.NotImplementedException();
         }
