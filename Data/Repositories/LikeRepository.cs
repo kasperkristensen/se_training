@@ -14,9 +14,10 @@ namespace se_training.Data
             _context = context;
         }
 
-        public async Task<Like> Create(Like entity)
+        public async Task<Like> Create(LikeCreateDTO entity)
         {
-            var like = _context.Likes.Add(entity);
+            var L = DTO2Like(entity);
+            var like = _context.Likes.Add(L);
             await _context.SaveChangesAsync();
             return like.Entity;
         }

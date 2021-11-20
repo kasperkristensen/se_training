@@ -15,9 +15,10 @@ namespace se_training.Data
             _context = context;
         }
 
-        public async Task<Response> Create(Comment entity)
+        public async Task<Response> Create(CommentCreateDTO entity)
         {
-            var comment = _context.Comments.Add(entity);
+            Comment c = DTO2Comment(entity);
+            var comment = _context.Comments.Add(c);
             await _context.SaveChangesAsync();
             
             return Response.Created;
