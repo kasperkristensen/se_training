@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace se_training.Data
@@ -5,27 +6,20 @@ namespace se_training.Data
     public record MaterialCreateDTO
     {
         [Required]
-        public string Title { get; set; }
+        public string Title { get; init; }
         [Required]
-        public string Note { get; set; }
-        [Required]
-        public string UserId { get; set; }
-    }
+        public string Note { get; init; }
 
-    public record VideoMaterialCreateDTO : MaterialCreateDTO
-    {
         [Required]
-        [Url]
-        public string VideoUrl { get; set; }
+        public string AuthorName { get; init; }
+
+        public string VideoUrl { get; init; }
+
+        public IEnumerable<string> TagValues { get; init; }
     }
 
     public record MaterialDTO : MaterialCreateDTO
     {
-        public int Id { get; set; }
-    }
-
-    public record VideoMaterialDTO : VideoMaterialCreateDTO
-    {
-        public int Id { get; set; }
+        public int Id { get; init; }
     }
 }

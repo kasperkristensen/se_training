@@ -5,7 +5,7 @@ namespace se_training.Data
 {
     public interface ITagRepository
     {
-        Task<Response> Create(TagCreateDTO entity);
+        Task<(Response, Tag)> Create(TagCreateDTO entity);
         Task<Response> Update(TagUpdateDTO entity);
         Task<Response> Delete(TagUpdateDTO entity);
         Task<Response> Delete(int id);

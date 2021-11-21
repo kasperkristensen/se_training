@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace se_training.Data
 {
-    public class LikeRepository : IRepository<Like>
+    public class LikeRepository : ILikeRepository
     {
         private readonly SeContext _context;
 
@@ -14,39 +14,55 @@ namespace se_training.Data
             _context = context;
         }
 
-        public async Task<Like> Create(Like entity)
+        public async Task<(Response, Like)> Create(LikeCreateDTO dto)
         {
-            var like = _context.Likes.Add(entity);
+            var materialRepo = new MaterialRepository(_context);
+
+            var material = await materialRepo.Get(dto.MaterialId);
+
+            if (material == null)
+            {
+                return (Response.BadRequest, null);
+            }
+
+            var toCreate = new Like
+            {
+                UserId = dto.UserId,
+                Material = material
+            };
+
+            var like = _context.Likes.Add(toCreate).Entity;
             await _context.SaveChangesAsync();
-            return like.Entity;
+
+            return (Response.Created, like);
         }
 
-        public async Task Delete(Like entity)
-        {
-            _context.Likes.Remove(entity);
-            await _context.SaveChangesAsync();
-        }
-
-        public async Task Delete(int id)
+        public async Task<Response> Delete(int id)
         {
             var like = await _context.Likes.FindAsync(id);
-            await Delete(like);
+
+            if (like == null)
+            {
+                return Response.NotFound;
+            }
+
+            _context.Likes.Remove(like);
+            await _context.SaveChangesAsync();
+
+            return Response.Deleted;
         }
 
-        public async Task<IEnumerable<Like>> GetAllByMaterialId(int materialId)
-        {
-            var likes = _context.Likes.Where(l => l.Material.Id == materialId);
-            return await likes.ToListAsync();
-        }
-
-        public async Task<Like> GetById(int id)
+        public async Task<Like> Get(int id)
         {
             return await _context.Likes.FindAsync(id);
         }
 
-        public Task<Like> Update(Like entity)
+        public async Task<IEnumerable<Like>> GetAllByMaterial(int materialId)
         {
-            throw new System.NotImplementedException();
+            return await _context.Likes
+                .Include(l => l.Material)
+                .Where(l => l.Material.Id == materialId)
+                .ToListAsync();
         }
     }
 }

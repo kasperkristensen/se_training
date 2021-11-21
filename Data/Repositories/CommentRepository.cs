@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace se_training.Data
 {
-    public class CommentRepository : IRepository<Comment>
+    public class CommentRepository : ICommentRepository
     {
         private readonly string[] AllowedRelations = { "Material" };
         private readonly SeContext _context;
@@ -15,43 +15,72 @@ namespace se_training.Data
             _context = context;
         }
 
-        public async Task<Response> Create(Comment entity)
+        public async Task<Response> Create(CommentCreateDTO dto)
         {
-            var comment = _context.Comments.Add(entity);
-            await _context.SaveChangesAsync();
-            
-            return Response.Created;
-        }
+            var material = await _context.Materials.FindAsync(dto.MaterialId);
 
-        public async Task<Response> Delete(Comment entity)
-        {
-            _context.Comments.Remove(entity);
+            if (material == null)
+            {
+                return Response.BadRequest;
+            }
+
+            var parent = await _context.Comments.FindAsync(dto.ParentId);
+
+            var comment = new Comment
+            {
+                Material = material,
+                Text = dto.Text,
+                UserId = dto.UserId,
+                UserName = dto.UserName,
+                Parent = parent
+            };
+
+            _context.Comments.Add(comment);
             await _context.SaveChangesAsync();
-            return Response.Deleted;
+
+            return Response.Created;
         }
 
         public async Task<Response> Delete(int id)
         {
             var comment = await _context.Comments.FindAsync(id);
-            await Delete(comment);
-            return Response.Deleted;
-        }
-
-        public async Task<Comment> GetById(int id)
-        {
-            return await _context.Comments.FindAsync(id);
-        }
-
-        public async Task<Response> Update(CommentDTO entity)
-        {
-            var comment = _context.Comments.Find(entity.Id);
 
             if (comment == null)
             {
                 return Response.NotFound;
             }
 
-            comment.Text = entity.Text;
+            _context.Comments.Remove(comment);
+            await _context.SaveChangesAsync();
+
+            return Response.Deleted;
+        }
+
+        public async Task<Comment> Get(int id)
+        {
+            return await _context.Comments.FindAsync(id);
+        }
+
+        public async Task<IEnumerable<Comment>> GetAllByMaterial(int materialId)
+        {
+            return await _context.Comments
+                .Include(c => c.Material)
+                .Where(c => c.Material.Id == materialId)
+                .ToListAsync();
+        }
+
+        public async Task<Response> Update(CommentDTO dto)
+        {
+            var comment = await _context.Comments.FindAsync(dto.Id);
+
+            if (comment == null)
+            {
+                return Response.NotFound;
+            }
+
+            comment.Text = dto.Text;
+
+            _context.Comments.Update(comment);
             await _context.SaveChangesAsync();
 
             return Response.Updated;
