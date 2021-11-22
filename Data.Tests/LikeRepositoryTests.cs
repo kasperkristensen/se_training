@@ -1,4 +1,3 @@
-using System;
 using Microsoft.Data.Sqlite;
 using se_training.Data;
 using Microsoft.EntityFrameworkCore;
@@ -22,7 +21,7 @@ namespace Data.Tests
             var context = new SeContext(builder.Options);
             context.Database.EnsureCreated();
             context.SaveChangesAsync(true);
-            context.Materials.Add(new Material {Title = "How to make your own Pokemon Rom hack"});
+            context.Materials.Add(new Material { Title = "How to make your own Pokemon Rom hack" });
 
             _context = context;
             _repo = new LikeRepository(_context);
@@ -33,29 +32,29 @@ namespace Data.Tests
         public async void Create_given_LikeCreateDTO_returns_Created_Response()
         {
 
-            var dto = new LikeCreateDTO{
+            var dto = new LikeCreateDTO
+            {
                 UserId = "jeff",
                 MaterialId = 0
             };
-            Like actual =  await _repo.Create(dto);
+            var response = await _repo.Create(dto);
+            Like actual = response.Item2;
             Assert.Equal(dto.UserId, actual.UserId);
         }
 
         [Fact]
         public async void GetById_When_Given_Id_Returns_Corresponding_Comment()
         {
-            var dto = new LikeCreateDTO{
+            var dto = new LikeCreateDTO
+            {
                 UserId = "jeff",
                 MaterialId = 0
             };
             await _repo.Create(dto);
 
-            Like actual =await _repo.GetById(0);
+            Like actual = await _repo.Get(0);
 
             Assert.Equal(dto.UserId, actual.UserId);
         }
-
-
-
-
+    }
 }

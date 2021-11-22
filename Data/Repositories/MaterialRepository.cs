@@ -13,7 +13,7 @@ namespace se_training.Data
             _context = context;
         }
 
-        public async Task<Response> Create(MaterialCreateDTO dto)
+        public async Task<(Response, Material)> Create(MaterialCreateDTO dto)
         {
             var tagRepo = new TagRepository(_context);
 
@@ -49,10 +49,10 @@ namespace se_training.Data
                 Tags = tags
             };
 
-            _context.Materials.Add(material);
+            var created = _context.Materials.Add(material).Entity;
             await _context.SaveChangesAsync();
 
-            return Response.Created;
+            return (Response.Created, created);
         }
 
         public async Task<Response> Delete(int id)

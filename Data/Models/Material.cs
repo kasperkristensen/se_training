@@ -16,6 +16,8 @@ namespace se_training.Data
         [StringLength(50)]
         public string AuthorName { get; init; }
 
+        public string UserId { get; init; }
+
         public string VideoUrl { get; set; } = null;
 
         public ICollection<Comment> Comments { get; set; } = null;
