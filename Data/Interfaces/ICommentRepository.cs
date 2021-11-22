@@ -8,7 +8,7 @@ namespace se_training.Data
         Task<Response> Create(CommentCreateDTO dto);
         Task<Response> Update(CommentDTO dto);
         Task<Response> Delete(int id);
-        Task<Response> Get(int id);
-        IEnumerable<Comment> GetAll();
+        Task<Comment> Get(int id);
+        Task<IEnumerable<Comment>> GetAllByMaterial(int materialId);
     }
 }

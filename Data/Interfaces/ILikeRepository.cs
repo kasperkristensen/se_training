@@ -5,10 +5,9 @@ namespace se_training.Data
 {
     public interface ILikeRepository
     {
-        Task<Response> Create(LikeCreateDTO dto);
-        Task<Response> Update(Like dto);
+        Task<(Response, Like)> Create(LikeCreateDTO dto);
         Task<Response> Delete(int id);
-        Like Get(int id);
-        IEnumerable<Like> GetAll();
+        Task<Like> Get(int id);
+        Task<IEnumerable<Like>> GetAllByMaterial(int materialId);
     }
 }

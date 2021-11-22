@@ -1,12 +1,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace se_training.Data
 {
     public class TagRepository : ITagRepository
     {
-        
         private readonly SeContext _context;
 
         public TagRepository(SeContext context)
@@ -14,25 +14,25 @@ namespace se_training.Data
             _context = context;
         }
 
-        public async Task<Response> Create(TagCreateDTO entity)
+        public async Task<(Response, Tag)> Create(TagCreateDTO entity)
         {
             var material = await _context.Materials.FindAsync(entity.MaterialId);
 
             if (material == null)
             {
-                return Response.BadRequest;
+                return (Response.BadRequest, null);
             }
 
-            var tag = new Tag
+            var toCreate = new Tag
             {
                 Value = entity.Value,
                 Materials = new List<Material>() { await _context.Materials.FindAsync(entity.MaterialId) }
             };
 
-            _context.Tags.Add(tag);
+            var tag = _context.Tags.Add(toCreate).Entity;
             await _context.SaveChangesAsync();
-            
-            return Response.Created;
+
+            return (Response.Created, tag);
         }
 
         public async Task<Response> Delete(TagUpdateDTO entity)
@@ -58,9 +58,19 @@ namespace se_training.Data
             return Response.Deleted;
         }
 
+        public async Task<IEnumerable<Tag>> GetAll()
+        {
+            return await _context.Tags.ToListAsync();
+        }
+
         public async Task<Tag> GetById(int id)
         {
             return await _context.Tags.FindAsync(id);
+        }
+
+        public async Task<Tag> GetByValue(string value)
+        {
+            return await _context.Tags.FirstOrDefaultAsync(t => t.Value == value);
         }
 
         public async Task<Response> Update(TagUpdateDTO entity)
@@ -72,8 +82,15 @@ namespace se_training.Data
                 return Response.NotFound;
             }
 
+            var materials = new List<Material>();
+
+            foreach (var materialId in entity.MaterialIds)
+            {
+                materials.Add(await _context.Materials.FindAsync(materialId));
+            }
+
             tag.Value = entity.Value;
-            tag.Materials = await entity.MaterialIds.Select(async id => await _context.Materials.FindAsync(id)).ToList();
+            tag.Materials = materials;
             await _context.SaveChangesAsync();
 
             return Response.Updated;
