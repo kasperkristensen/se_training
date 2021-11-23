@@ -2,7 +2,7 @@ using Microsoft.Data.Sqlite;
 using se_training.Data;
 using Microsoft.EntityFrameworkCore;
 using Xunit;
-
+using System;
 
 namespace Data.Tests
 {
@@ -18,19 +18,20 @@ namespace Data.Tests
             connection.Open();
             var builder = new DbContextOptionsBuilder<SeContext>();
             builder.UseSqlite(connection);
-            var context = new SeContext(builder.Options);
-            context.Database.EnsureCreated();
-            context.SaveChangesAsync(true);
-            context.Materials.Add(new Material { Title = "How to make your own Pokemon Rom hack" });
+            var _context = new SeContext(builder.Options);
+            _context.Database.EnsureCreated();
+            _context.Materials.Add(new Material { Title = "How to make your own Pokemon Rom hack" });
+            _context.SaveChangesAsync(true);
 
-            _context = context;
             _repo = new LikeRepository(_context);
-
         }
 
         [Fact]
         public async void Create_given_LikeCreateDTO_returns_Created_Response()
         {
+            var mat = await _context.Materials.FindAsync(0);
+
+            Console.WriteLine(mat.Id);
 
             var dto = new LikeCreateDTO
             {
