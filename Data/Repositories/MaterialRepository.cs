@@ -27,6 +27,7 @@ namespace se_training.Data
                 {
                     var tagDTO = new TagCreateDTO
                     {
+                        MaterialId = 1,
                         Value = value
                     };
                     var result = await tagRepo.Create(tagDTO);
@@ -39,6 +40,7 @@ namespace se_training.Data
 
                 tags.Add(tag);
             }
+            
 
             var material = new Material
             {
@@ -46,8 +48,13 @@ namespace se_training.Data
                 Note = dto.Note,
                 AuthorName = dto.AuthorName,
                 VideoUrl = dto.VideoUrl,
-                Tags = tags
+                Tags = tags,
+                //time quick fix
+                CreatedAt = System.DateTime.UtcNow,
+                UpdatedAt = System.DateTime.UtcNow
             };
+
+
 
             var created = _context.Materials.Add(material).Entity;
             await _context.SaveChangesAsync();

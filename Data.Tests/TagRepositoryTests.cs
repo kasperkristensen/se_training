@@ -1,6 +1,7 @@
 using System;
 using Microsoft.Data.Sqlite;
 using se_training.Data;
+using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Xunit;
 
@@ -21,8 +22,9 @@ namespace Data.Tests
             builder.UseSqlite(connection);
             var context = new SeContext(builder.Options);
             context.Database.EnsureCreated();
-            context.SaveChangesAsync(true);
             context.Materials.Add(new Material { Title = "How to make your own Pokemon Rom hack" });
+            context.SaveChangesAsync(true);
+
 
             _context = context;
             _repo = new TagRepository(_context);
@@ -36,7 +38,7 @@ namespace Data.Tests
             var dto = new TagCreateDTO
             {
                 Value = "Yep",
-                MaterialId = 0
+                MaterialId = 1
             };
             var response = await _repo.Create(dto);
             Response actual = response.Item1;
@@ -49,11 +51,11 @@ namespace Data.Tests
             var dto = new TagCreateDTO
             {
                 Value = "Yep",
-                MaterialId = 0
+                MaterialId = 1
             };
             await _repo.Create(dto);
 
-            Tag actual = await _repo.GetById(0);
+            Tag actual = await _repo.GetById(1);
 
             Assert.Equal(dto.Value, actual.Value);
         }
@@ -64,16 +66,18 @@ namespace Data.Tests
 
             var dto = new TagCreateDTO
             {
-                Value = "ye"
+                Value = "ye",
+                MaterialId = 1
             };
             var d2 = new TagUpdateDTO
             {
-                Id = 0,
+                Id = 1,
                 Value = "Yep",
+                MaterialIds = new List<int>{1}
             };
             _repo.Create(dto);
             Response actual = await _repo.Update(d2);
-            Tag updated = await _repo.GetById(0);
+            Tag updated = await _repo.GetById(1);
 
             Assert.Equal(Response.Updated, actual);
             Assert.Equal(d2.Value, updated.Value);
@@ -86,7 +90,8 @@ namespace Data.Tests
 
             var dto = new TagCreateDTO
             {
-                Value = "ye"
+                Value = "ye",
+                MaterialId = 1
             };
             var d2 = new TagUpdateDTO
             {
@@ -95,7 +100,7 @@ namespace Data.Tests
             };
             _repo.Create(dto);
             Response actual = await _repo.Update(d2);
-            Tag updated = await _repo.GetById(0);
+            Tag updated = await _repo.GetById(1);
 
             Assert.Equal(Response.NotFound, actual);
             Assert.Equal("ye", updated.Value);

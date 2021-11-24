@@ -20,10 +20,12 @@ namespace Data.Tests
             connection.Open();
             var builder = new DbContextOptionsBuilder<SeContext>();
             builder.UseSqlite(connection);
-            var _context = new SeContext(builder.Options);
-            _context.Database.EnsureCreated();
-            _context.Materials.Add(new Material {Id = 0, Title = "How to make your own Pokemon Rom hack" });
-            _context.SaveChangesAsync(true);
+            var context = new SeContext(builder.Options);
+            context.Database.EnsureCreated();
+            context.Materials.Add(new Material { Title = "How to make your own Pokemon Rom hack" });
+            context.SaveChangesAsync(true);
+
+            _context = context;
 
             _repo = new LikeRepository(_context);
         }
@@ -31,14 +33,7 @@ namespace Data.Tests
 
         [Fact]
         public async void Context_Material_Has_Material(){
-            var connection = new SqliteConnection("Filename=:memory:");
-            connection.Open();
-            var builder = new DbContextOptionsBuilder<SeContext>();
-            builder.UseSqlite(connection);
-            var _context = new SeContext(builder.Options);
-            _context.Database.EnsureCreated();
-            _context.Materials.Add(new Material {Id = 0, Title = "How to make your own Pokemon Rom hack" });
-            _context.SaveChangesAsync(true);
+
             var a = _context.Materials.Count();
 
             Assert.Equal(1, a);
@@ -47,15 +42,6 @@ namespace Data.Tests
         [Fact]
         public async void Create_given_LikeCreateDTO_returns_Created_Response()
         {
-            var connection = new SqliteConnection("Filename=:memory:");
-            connection.Open();
-            var builder = new DbContextOptionsBuilder<SeContext>();
-            builder.UseSqlite(connection);
-            var _context = new SeContext(builder.Options);
-            _context.Database.EnsureCreated();
-            _context.Materials.Add(new Material {Id = 0, Title = "How to make your own Pokemon Rom hack" });
-            _context.SaveChangesAsync(true);
-
             var dto = new LikeCreateDTO
             {
                 UserId = "jeff",
@@ -69,7 +55,7 @@ namespace Data.Tests
         }
 
         [Fact]
-        public async void GetById_When_Given_Id_Returns_Corresponding_Comment() // no idea why this works like this
+        public async void GetById_When_Given_Id_Returns_Corresponding_Comment()
         {
             var dto = new LikeCreateDTO
             {

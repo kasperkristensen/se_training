@@ -45,9 +45,9 @@ namespace se_training.Data
                 switch (entry.State)
                 {
                     case EntityState.Added:
-                        entry.CurrentValues["DeletedAt"] = null;
-                        entry.CurrentValues["CreatedAt"] = DateTime.Now;
-                        entry.CurrentValues["UpdatedAt"] = DateTime.Now;
+                        //entry.CurrentValues["DeletedAt"] = null;
+                        //entry.CurrentValues["CreatedAt"] = DateTime.Now;
+                        //entry.CurrentValues["UpdatedAt"] = DateTime.Now;
                         break;
                     case EntityState.Modified:
                         entry.CurrentValues["UpdatedAt"] = DateTime.Now;

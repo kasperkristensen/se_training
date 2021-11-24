@@ -2,6 +2,7 @@ using System;
 using Microsoft.Data.Sqlite;
 using se_training.Data;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using Xunit;
 
 
@@ -37,7 +38,8 @@ namespace Data.Tests
             {
                 Title = "Java for monkeys",
                 Note = "something",
-                UserId = "69"
+                UserId = "69",
+                TagValues = new List<string>{"tag1", "tag2"}
             };
             var response = await _repo.Create(dto);
             Material actual = response.Item2;
@@ -45,7 +47,6 @@ namespace Data.Tests
 
             Assert.Equal(dto.Title, actual.Title);
             Assert.Equal(dto.Note, actual.Note);
-            Assert.Equal(dto.UserId, actual.UserId);
             Assert.Equal(currentTime, actual.CreatedAt, precision: TimeSpan.FromSeconds(1));
             Assert.Equal(currentTime, actual.UpdatedAt, precision: TimeSpan.FromSeconds(1));
         }
@@ -58,17 +59,20 @@ namespace Data.Tests
             {
                 Title = "Java for monkeys",
                 Note = "something",
-                UserId = "69"
+                UserId = "69",
+                TagValues = new List<string>{"tag1", "tag2"}
             };
             var d2 = new MaterialCreateDTO
             {
                 Title = "Java for monkeys 2",
                 Note = "something else",
-                UserId = "69"
+                UserId = "69",
+                TagValues = new List<string>{"tag1", "tag2"}
             };
-            _repo.Create(dto);
+            await _repo.Create(dto);
             await _repo.Create(d2);
-            Material actual = await _repo.Get(2);
+            //Get(3) since we also have added a thing in the contructor
+            Material actual = await _repo.Get(3);
 
             var currentTime = DateTime.UtcNow;
 
@@ -83,18 +87,20 @@ namespace Data.Tests
             {
                 Title = "Java for monkeys",
                 Note = "something",
-                UserId = "69"
+                UserId = "69",
+                TagValues = new List<string>{"tag1", "tag2"}
             };
             var d2 = new MaterialDTO
             {
-                Id = 1,
+                Id = 2,
                 Title = "Java for monkeys 2",
                 Note = "something else",
-                UserId = "69"
+                UserId = "69",
+                TagValues = new List<string>{"tag1", "tag2"}
             };
             _repo.Create(dto);
             Response actual = await _repo.Update(d2);
-            Material updated = await _repo.Get(0);
+            Material updated = await _repo.Get(2);
 
             Assert.Equal(Response.Updated, actual);
             Assert.Equal(d2.Title, updated.Title);
@@ -108,7 +114,8 @@ namespace Data.Tests
             {
                 Title = "Java for monkeys",
                 Note = "something",
-                UserId = "69"
+                UserId = "69",
+                TagValues = new List<string>{"tag1", "tag2"}
             };
             var d2 = new MaterialDTO
             {
@@ -119,7 +126,7 @@ namespace Data.Tests
             };
             _repo.Create(dto);
             Response actual = await _repo.Update(d2);
-            Material updated = await _repo.Get(0);
+            Material updated = await _repo.Get(2);
 
             Assert.Equal(Response.NotFound, actual);
             Assert.Equal(dto.Title, updated.Title);

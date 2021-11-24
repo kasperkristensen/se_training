@@ -22,6 +22,6 @@ namespace se_training.Data
         public string Value { get; init; }
 
         [Required]
-        public ICollection<string> MaterialIds { get; init; }
+        public ICollection<int> MaterialIds { get; init; }
     }
 }
