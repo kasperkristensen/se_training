@@ -9,6 +9,9 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.Identity.Web;
+using Microsoft.Identity.Web.UI;
 using se_training.Data;
 
 namespace se_training
@@ -26,8 +29,26 @@ namespace se_training
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            var initialScopes = Configuration.GetValue<string>("DownstreamApi:Scopes")?.Split(' ');
+
+            services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
+                .AddMicrosoftIdentityWebApp(Configuration.GetSection("AzureAd"))
+                    .EnableTokenAcquisitionToCallDownstreamApi(initialScopes)
+                        .AddMicrosoftGraph(Configuration.GetSection("DownstreamApi"))
+                        .AddInMemoryTokenCaches();
+            services.AddControllersWithViews()
+                .AddMicrosoftIdentityUI();
+
+            services.AddAuthorization(options =>
+            {
+                // By default, all incoming requests will be authorized according to the default policy
+                options.FallbackPolicy = options.DefaultPolicy;
+            });
+
             services.AddRazorPages();
             services.AddServerSideBlazor();
+            services.AddServerSideBlazor()
+                .AddMicrosoftIdentityConsentHandler();
             services.AddSingleton<WeatherForecastService>();
         }
 
@@ -50,8 +71,12 @@ namespace se_training
 
             app.UseRouting();
 
+            app.UseAuthentication();
+            app.UseAuthorization();
+
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapControllers();
                 endpoints.MapBlazorHub();
                 endpoints.MapFallbackToPage("/_Host");
             });
