@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
@@ -40,14 +41,15 @@ namespace se_training.Data
 
         private void OnBeforeSaving()
         {
-            foreach (var entry in ChangeTracker.Entries())
+
+            foreach (var entry in ChangeTracker.Entries<IBaseModel>())
             {
                 switch (entry.State)
                 {
                     case EntityState.Added:
-                        //entry.CurrentValues["DeletedAt"] = null;
-                        //entry.CurrentValues["CreatedAt"] = DateTime.Now;
-                        //entry.CurrentValues["UpdatedAt"] = DateTime.Now;
+                        entry.CurrentValues["DeletedAt"] = null;
+                        entry.CurrentValues["CreatedAt"] = DateTime.Now;
+                        entry.CurrentValues["UpdatedAt"] = DateTime.Now;
                         break;
                     case EntityState.Modified:
                         entry.CurrentValues["UpdatedAt"] = DateTime.Now;

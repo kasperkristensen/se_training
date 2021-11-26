@@ -39,11 +39,11 @@ namespace Data.Tests
                 Title = "Java for monkeys",
                 Note = "something",
                 UserId = "69",
-                TagValues = new List<string>{"tag1", "tag2"}
+                TagValues = new List<string> { "tag1", "tag2" }
             };
             var response = await _repo.Create(dto);
             Material actual = response.Item2;
-            var currentTime = DateTime.UtcNow;
+            var currentTime = DateTime.Now;
 
             Assert.Equal(dto.Title, actual.Title);
             Assert.Equal(dto.Note, actual.Note);
@@ -60,14 +60,14 @@ namespace Data.Tests
                 Title = "Java for monkeys",
                 Note = "something",
                 UserId = "69",
-                TagValues = new List<string>{"tag1", "tag2"}
+                TagValues = new List<string> { "tag1", "tag2" }
             };
             var d2 = new MaterialCreateDTO
             {
                 Title = "Java for monkeys 2",
                 Note = "something else",
                 UserId = "69",
-                TagValues = new List<string>{"tag1", "tag2"}
+                TagValues = new List<string> { "tag1", "tag2" }
             };
             await _repo.Create(dto);
             await _repo.Create(d2);
@@ -88,7 +88,7 @@ namespace Data.Tests
                 Title = "Java for monkeys",
                 Note = "something",
                 UserId = "69",
-                TagValues = new List<string>{"tag1", "tag2"}
+                TagValues = new List<string> { "tag1", "tag2" }
             };
             var d2 = new MaterialDTO
             {
@@ -96,7 +96,7 @@ namespace Data.Tests
                 Title = "Java for monkeys 2",
                 Note = "something else",
                 UserId = "69",
-                TagValues = new List<string>{"tag1", "tag2"}
+                TagValues = new List<string> { "tag1", "tag2" }
             };
             _repo.Create(dto);
             Response actual = await _repo.Update(d2);
@@ -115,7 +115,7 @@ namespace Data.Tests
                 Title = "Java for monkeys",
                 Note = "something",
                 UserId = "69",
-                TagValues = new List<string>{"tag1", "tag2"}
+                TagValues = new List<string> { "tag1", "tag2" }
             };
             var d2 = new MaterialDTO
             {
