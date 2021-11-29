@@ -24,7 +24,7 @@ namespace Data.Tests
             builder.UseSqlite(connection);
             var context = new SeContext(builder.Options);
             context.Database.EnsureCreated();
-            context.Materials.Add(new Material { Title = "How to make your own Pokemon Rom hack" });
+            context.Materials.Add(new Material { Title = "How to make your own Pokemon Rom hack" , Tags = new List<Tag>()});
             context.SaveChangesAsync(true);
 
             _context = context;
@@ -61,12 +61,6 @@ namespace Data.Tests
                 TagValues = tags
             };
             var actual =from Material m in _search.Search(d2) select(m.Id);
-
-
-            List<string> a = new List<string>();
-            foreach(Material m in _context.Materials){
-                a.Add(m.Title);
-            }
 
             Assert.Equal(new List<int>{1,3} , actual);
 
@@ -141,6 +135,7 @@ namespace Data.Tests
                 TagValues = new List<string> { "tag1", "tag2" }
             };
              var mat2 = await _repo.Create(d);
+             var mat3 = await _repo.Create(dtour);
 
 
             var d2 = new MaterialSearchDTO{
