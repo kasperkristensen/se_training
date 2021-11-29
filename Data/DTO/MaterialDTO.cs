@@ -25,4 +25,14 @@ namespace se_training.Data
     {
         public int Id { get; init; }
     }
+
+    public record MaterialSearchDTO
+    {
+
+        public string SearchString { get; init; }
+        public int MinimumLikes {get; init;}
+        public IEnumerable<Tag> TagValues { get; init; }
+
+        public int TagLeniency {get;init;}
+    }
 }

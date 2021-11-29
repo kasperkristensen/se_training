@@ -32,64 +32,137 @@ namespace Data.Tests
             _search = new Searcher(_context);
         }
 
-        //[Fact]
-        public async void Context_Has_Materials(){
-            var dto = new MaterialCreateDTO
-            {
-                Title = "Java for monkeys",
-                Note = "something",
-                UserId = "69",
-                TagValues = new List<string> { "tag1", "tag2" }
-            };
-             await _repo.Create(dto);
-            var a = 2;
-            Assert.Equal(2,a);
-        }
+
         [Fact]
-        public async void Search_When_Given_SearchDTO_Returns_Material_With_All_Tags_In_DTO(){
+        public async void Search_When_Given_SearchDTO_With_Tags_Returns_Material_With_All_Tags_In_DTO(){
             var dto = new MaterialCreateDTO
             {
-                Title = "Java for monkeys",
+                Title = "Java for monkeys 1",
                 Note = "something",
                 UserId = "69",
                 TagValues = new List<string> { "tag4", "tag5" }
             };
-             await _repo.Create(dto);
+             var mat = await _repo.Create(dto);
 
             var d = new MaterialCreateDTO
             {
-                Title = "Java for monkeys",
+                Title = "Java for monkeys 2",
                 Note = "something",
                 UserId = "69",
                 TagValues = new List<string> { "tag1", "tag2" }
             };
-             await _repo.Create(d);
+             var mat2 = await _repo.Create(d);
 
-            await _repo.Create(dto);
-            var mat = await _repo.Get(2);
-            var tags = mat.Tags;
+            var tags = mat2.Item2.Tags;
 
             var d2 = new MaterialSearchDTO{
                 SearchString = "",
-                LowerBoundRating = 0,
-                UpperBoundRating = 5,
+                MinimumLikes = 0,
                 TagValues = tags
             };
-            var actual =_search.Search(d2);
-            var expected = new List<int>{2};
-            var mat1 = await _repo.Get(2);
-            var mat2 = await _repo.Get(3);
+            var actual =from Material m in _search.Search(d2) select(m.Id);
 
-            var t1 = new List<string>{"a","b"};
-            var t2 = new List<string>{"b","c"};
-            var a = t1.Intersect(t2);
-            var pc1 = from tag in mat1.Tags select (tag.Value);
-            var pc2 = from tag in mat2.Tags select (tag.Value);
-            var intersect = from t in mat1.Tags where pc1.Intersect(pc2).Contains(t.Value) select t.Value;
+
+            List<string> a = new List<string>();
+            foreach(Material m in _context.Materials){
+                a.Add(m.Title);
+            }
 
             Assert.Equal(new List<int>{1,3} , actual);
 
         }
+
+
+        [Fact]
+        public async void Search_When_Given_SearchDTO_With_Likes_Returns_Materials_With_Enough_Likes(){
+            var dto = new MaterialCreateDTO
+            {
+                Title = "Java for monkeys 1",
+                Note = "something",
+                UserId = "69",
+                TagValues = new List<string> { "tag4", "tag5" }
+            };
+             var mat = await _repo.Create(dto);
+
+            var d = new MaterialCreateDTO
+            {
+                Title = "Java for monkeys 2",
+                Note = "something",
+                UserId = "69",
+                TagValues = new List<string> { "tag1", "tag2" }
+            };
+             var mat2 = await _repo.Create(d);
+
+             mat.Item2.Likes=new List<Like>();
+             mat2.Item2.Likes=new List<Like>();
+             
+             for(int i = 0; i <10; i++){
+                 if(i<3)
+                 mat2.Item2.Likes.Add(new Like{});
+                 mat.Item2.Likes.Add(new Like{});
+             }
+
+
+
+            var d2 = new MaterialSearchDTO{
+                MinimumLikes = 5
+            };
+            var actual =from Material m in _search.Search(d2) select(m.Id);
+
+            Assert.Equal(new List<int>{2} , actual);
+
+        }
+
+
+
+        [Fact]
+        public async void Search_When_Given_SearchDTO_With_SearchString_Returns_Materials_String_In_Title_Or_Note(){
+            var dto = new MaterialCreateDTO
+            {
+                Title = "Java for monkeys 1",
+                Note = "something",
+                UserId = "69",
+                TagValues = new List<string> { "tag4", "tag5" }
+            };
+             var mat = await _repo.Create(dto);
+
+            var d = new MaterialCreateDTO
+            {
+                Title = "something for monkeys 2",
+                Note = "The sequel",
+                UserId = "69",
+                TagValues = new List<string> { "tag1", "tag2" }
+            };
+            var dtour = new MaterialCreateDTO
+            {
+                Title = "Java for monkeys 3",
+                Note = "Anything",
+                UserId = "69",
+                TagValues = new List<string> { "tag1", "tag2" }
+            };
+             var mat2 = await _repo.Create(d);
+
+
+            var d2 = new MaterialSearchDTO{
+                SearchString = "something"
+            };
+            var actual =from Material m in _search.Search(d2) select(m.Id);
+
+            Assert.Equal(new List<int>{2,3} , actual);
+
+        }
+
+        /*
+        [Fact]
+        public void confirmation(){
+
+        }
+        */
+
+
+
+
+
 
         private bool disposed;
 
