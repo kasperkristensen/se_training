@@ -68,5 +68,35 @@ namespace Data.Tests
 
             Assert.Equal(dto.UserId, actual.UserId);
         }
+
+        [Fact]
+        public async void GetIdByUserIdAndMaterialId_Returns_id_given_UserId_and_liked_MaterialId()
+        {
+            var dto = new LikeCreateDTO
+            {
+                UserId = "jeff",
+                MaterialId = 1
+            };
+            var created = await _repo.Create(dto);
+            int expected = created.Item2.Id;
+            int actual =  _repo.GetIdByUserIdAndMaterialId("jeff",1);
+
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
+        public async void GetIdByUserIdAndMaterialId_Returns_0_given_invalid_UserId_and_liked_MaterialId()
+        {
+             var dto = new LikeCreateDTO
+            {
+                UserId = "jeff",
+                MaterialId = 1
+            };
+            var created = await _repo.Create(dto);
+            int expected = 0;
+            int actual =  _repo.GetIdByUserIdAndMaterialId("joff",2);
+            Console.WriteLine(actual);
+            Assert.Equal(expected, actual);
+        }
     }
 }
