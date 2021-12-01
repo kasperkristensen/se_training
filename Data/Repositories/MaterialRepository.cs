@@ -13,7 +13,7 @@ namespace se_training.Data
             _context = context;
         }
 
-        public async Task<Response> Create(MaterialCreateDTO dto)
+        public async Task<(Response, Material)> Create(MaterialCreateDTO dto)
         {
             var tagRepo = new TagRepository(_context);
 
@@ -27,6 +27,7 @@ namespace se_training.Data
                 {
                     var tagDTO = new TagCreateDTO
                     {
+                        MaterialId = 1,
                         Value = value
                     };
                     var result = await tagRepo.Create(tagDTO);
@@ -39,6 +40,7 @@ namespace se_training.Data
 
                 tags.Add(tag);
             }
+            
 
             var material = new Material
             {
@@ -46,13 +48,18 @@ namespace se_training.Data
                 Note = dto.Note,
                 AuthorName = dto.AuthorName,
                 VideoUrl = dto.VideoUrl,
-                Tags = tags
+                Tags = tags,
+                //time quick fix
+                CreatedAt = System.DateTime.UtcNow,
+                UpdatedAt = System.DateTime.UtcNow
             };
 
-            _context.Materials.Add(material);
+
+
+            var created = _context.Materials.Add(material).Entity;
             await _context.SaveChangesAsync();
 
-            return Response.Created;
+            return (Response.Created, created);
         }
 
         public async Task<Response> Delete(int id)

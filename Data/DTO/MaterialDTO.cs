@@ -11,6 +11,9 @@ namespace se_training.Data
         public string Note { get; init; }
 
         [Required]
+        public string UserId { get; init; }
+
+        [Required]
         public string AuthorName { get; init; }
 
         public string VideoUrl { get; init; }

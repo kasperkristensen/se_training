@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
@@ -40,7 +41,8 @@ namespace se_training.Data
 
         private void OnBeforeSaving()
         {
-            foreach (var entry in ChangeTracker.Entries())
+
+            foreach (var entry in ChangeTracker.Entries<IBaseModel>())
             {
                 switch (entry.State)
                 {

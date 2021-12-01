@@ -7,7 +7,6 @@ namespace se_training.Data
 {
     public class TagRepository : ITagRepository
     {
-
         private readonly SeContext _context;
 
         public TagRepository(SeContext context)

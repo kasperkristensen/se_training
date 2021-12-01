@@ -57,12 +57,26 @@ namespace se_training.Data
             return await _context.Likes.FindAsync(id);
         }
 
-        public async Task<IEnumerable<Like>> GetAllByMaterial(int materialId)
+        public async Task<IEnumerable<Like>> GetAllByMaterial(int materialId) //deleted?
         {
             return await _context.Likes
                 .Include(l => l.Material)
                 .Where(l => l.Material.Id == materialId)
                 .ToListAsync();
+        }
+
+        public int GetIdByUserIdAndMaterialId(string UserId, int MaterialId) //Async??
+        {
+            var like = _context.Likes
+            .Where(l => l.Material.Id == MaterialId &&
+                        l.UserId == UserId)
+            .FirstOrDefault();
+
+            if( like != null)
+            {
+                return like.Id;
+            }
+            else return 0;
         }
     }
 }
