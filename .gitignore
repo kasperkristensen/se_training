@@ -14,8 +14,7 @@
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
-*/connection_string.txt
-*/db_password.txt
+**/.local
 
 # Build results
 /[Dd]ebug/
