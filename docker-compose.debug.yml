@@ -15,7 +15,7 @@ services:
       - database
     secrets:
       - source: connection_string
-        target: ConnectionStrings__SeTraining
+        target: ConnectionStrings__seTraining
 
   database:
     image: mcr.microsoft.com/mssql/server:2019-latest
@@ -23,7 +23,7 @@ services:
       ACCEPT_EULA: Y
       MSSQL_SA_PASSWORD_FILE: /run/secrets/db_password
     ports:
-      - 1440:1433
+      - 1433:1433
     secrets:
       - db_password
 

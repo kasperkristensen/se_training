@@ -31,7 +31,7 @@ namespace se_training
             services.AddServerSideBlazor();
             
             services.AddDbContext<SeContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+                options.UseSqlServer(Configuration.GetConnectionString("SeTraining"))); //skal nok ændres nu
             services.AddControllersWithViews();
         }
 
